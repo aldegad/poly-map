@@ -1,79 +1,52 @@
 import { del, get, set } from "idb-keyval";
-import { defineStore } from "pinia";
+import { toRaw } from "vue";
+import { type _GettersTree, defineStore } from "pinia";
+import type { CanvasStoreActions, CanvasStoreState } from "@/types";
 
-interface CanvasStore {
-  name: string;
-  blob: Blob | null;
-  imageSrc: string;
-  canvasWidth: number;
-  canvasHeight: number;
-  imageWidth: number;
-  imageHeight: number;
-}
-
-export const useCanvasStore = defineStore("canvas", {
-  state: (): CanvasStore => ({
-    name: "",
-    blob: null,
-    imageSrc: "",
-    canvasWidth: 640,
-    canvasHeight: 640,
-    imageWidth: 0,
-    imageHeight: 0,
+export const useCanvasStore = defineStore<
+  "canvas",
+  CanvasStoreState,
+  _GettersTree<CanvasStoreState>,
+  CanvasStoreActions
+>("canvas", {
+  state: () => ({
+    id: crypto.randomUUID(),
+    canvases: [],
+    currentCanvas: null,
   }),
   actions: {
-    async saveCanvas({
-      name,
-      blob,
-      canvasWidth,
-      canvasHeight,
-      imageWidth,
-      imageHeight,
-    }: {
-      name: string;
-      blob: Blob;
-      canvasWidth: number;
-      canvasHeight: number;
-      imageWidth: number;
-      imageHeight: number;
-    }) {
-      this.name = name;
-      this.blob = blob;
-      this.imageSrc = URL.createObjectURL(blob);
-      this.canvasWidth = canvasWidth;
-      this.canvasHeight = canvasHeight;
-      this.imageWidth = imageWidth;
-      this.imageHeight = imageHeight;
-      await set("tempCanvas", {
-        name,
-        blob,
-        canvasWidth,
-        canvasHeight,
-        imageWidth,
-        imageHeight,
-      });
+    async addCanvas(canvas) {
+      this.canvases.push({ ...canvas, id: crypto.randomUUID() });
+      await set("canvases", toRaw(this.canvases));
     },
-    async loadCanvas() {
-      const tempCanvas = await get("tempCanvas");
-      if (tempCanvas) {
-        this.name = tempCanvas.name;
-        this.blob = tempCanvas.blob;
-        this.imageSrc = URL.createObjectURL(tempCanvas.blob);
-        this.canvasWidth = tempCanvas.canvasWidth;
-        this.canvasHeight = tempCanvas.canvasHeight;
-        this.imageWidth = tempCanvas.imageWidth;
-        this.imageHeight = tempCanvas.imageHeight;
+    async removeCanvas(id) {
+      const idx = this.canvases.findIndex((c) => c.id === id);
+      if (idx !== -1) {
+        this.canvases.splice(idx, 1);
+      }
+      await set("canvases", toRaw(this.canvases));
+    },
+    async clearAll() {
+      this.clearCanvases();
+    },
+    async loadCanvases() {
+      const loaded = await get("canvases");
+      if (loaded !== undefined) {
+        this.canvases = loaded;
+      } else {
+        this.canvases = [];
       }
     },
-    async clearCanvas() {
-      this.name = "";
-      this.blob = null;
-      this.imageSrc = "";
-      this.canvasWidth = 640;
-      this.canvasHeight = 640;
-      this.imageWidth = 0;
-      this.imageHeight = 0;
-      await del("tempCanvas");
+    async clearCanvases() {
+      this.canvases = [];
+      this.currentCanvas = null;
+      await del("canvases");
+    },
+    setCurrentCanvas(canvas) {
+      this.currentCanvas = canvas;
+    },
+    clearCurrentCanvas() {
+      this.currentCanvas = null;
     },
   },
 });

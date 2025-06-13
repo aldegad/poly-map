@@ -7,7 +7,7 @@ export const usePolygonDrawer = () => {
   const drawerRef = ref<PolyDrawerInstance | null>(null);
 
   const clearDrawing = () => {
-    drawerRef.value?.clear();
+    // drawerRef.value?.clear();
   };
 
   return {

@@ -37,7 +37,7 @@ export const usePolygonStore = defineStore<
     },
     async clearAll() {
       this.polygons = [];
-      this.currentPolygon = null;
+      this.clearCurrentPolygon();
       await del("polygons");
     },
     async loadPolygons() {

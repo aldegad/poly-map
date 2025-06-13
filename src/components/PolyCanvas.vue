@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from "@iconify/vue";
+/* import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { usePolygonDrawer } from "@/composables/usePolygonDrawer";
@@ -82,11 +82,12 @@ function handleResizeVEnd() {
 
 onMounted(async () => {
   await canvasStore.loadCanvas();
-});
+}); */
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center gap-2">
+  <div></div>
+  <!-- <div class="flex flex-col items-center justify-center gap-2">
     <div class="flex w-full items-center justify-between gap-2">
       <div class="flex items-center gap-2">
         <button
@@ -165,5 +166,5 @@ onMounted(async () => {
         />
       </div>
     </div>
-  </div>
+  </div> -->
 </template>

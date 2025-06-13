@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted } from "vue";
-import { storeToRefs } from "pinia";
+/* import { onBeforeUnmount, onMounted } from "vue";
 import { usePolygonStore } from "@/stores/polygonStore";
 import type { PolygonPoint } from "@/types";
-import { freezeStoreRefs } from "@/utils/freezedStoreRefs";
 import {
   distance,
   getMousePoint,
@@ -11,6 +9,7 @@ import {
   isPolygonClosed,
   movePointTogether,
 } from "@/utils/polygonDrawing";
+import { freezedStoreRefs } from "@/utils/stores/freezedStoreRefs";
 
 defineProps<{
   imageSrc: string;
@@ -19,9 +18,8 @@ defineProps<{
 }>();
 
 const polygonStore = usePolygonStore();
-const polygonRefs = storeToRefs(polygonStore);
 const { polygons, currentPolygon, draggingPoint, draggingPointIndex } =
-  freezeStoreRefs(polygonRefs);
+  freezedStoreRefs(polygonStore);
 
 const {
   addPolygon,
@@ -187,11 +185,12 @@ onBeforeUnmount(() => {
 
 defineExpose({
   clear,
-});
+}); */
 </script>
 
 <template>
-  <div
+  <div></div>
+  <!-- <div
     class="relative border border-gray-200 shadow-gray-50"
     :style="{
       width: `${canvasWidth || 500}px`,
@@ -214,7 +213,7 @@ defineExpose({
       @mouseup="handleMouseUp"
       style="z-index: 10; cursor: crosshair"
     >
-      <!-- 이미 그려진 폴리곤들 -->
+
       <template
         v-for="(poly, idx) in polygons"
         :key="idx"
@@ -227,7 +226,7 @@ defineExpose({
           stroke-width="2"
         />
       </template>
-      <!-- 현재 그리고 있는 폴리곤 선 -->
+
       <polyline
         v-if="currentPolygon?.points.length"
         :points="currentPolygon?.points.map((p) => `${p.x},${p.y}`).join(' ')"
@@ -235,7 +234,7 @@ defineExpose({
         stroke="#a21caf"
         stroke-width="2"
       />
-      <!-- 현재 그리고 있는(포커싱된) 점들 - 끌고 다니는 점이 마지막 점일 경우 제외 -->
+
       <template
         v-for="(currentPoint, i) in currentPolygon?.points"
         :key="i"
@@ -250,5 +249,5 @@ defineExpose({
         />
       </template>
     </svg>
-  </div>
+  </div> -->
 </template>
