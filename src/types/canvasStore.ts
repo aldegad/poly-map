@@ -23,7 +23,7 @@ export interface CanvasStoreActions {
   clearCanvases(): Promise<void>;
   setCurrentCanvas(canvas: CanvasState): void;
   clearCurrentCanvas(): void;
-  renameCanvasByIndex(index: number, name: string): Promise<void>;
+  renameCanvas(id: string, name: string): Promise<void>;
 }
 
 export type CanvasStore = CanvasStoreState & CanvasStoreActions;

@@ -48,8 +48,8 @@ export const useCanvasStore = defineStore<
     clearCurrentCanvas() {
       this.currentCanvas = null;
     },
-    async renameCanvasByIndex(index, name) {
-      const canvas = this.canvases[index];
+    async renameCanvas(id, name) {
+      const canvas = this.canvases.find((c) => c.id === id);
       if (canvas) {
         canvas.name = name;
       }
