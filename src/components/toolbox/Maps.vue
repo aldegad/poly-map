@@ -7,7 +7,7 @@ import { storeActions } from "@/utils/stores/storeActions";
 
 const c = useCanvasStore();
 const { canvases } = freezedStoreRefs(c);
-const { addCanvas, clearCanvases, removeCanvas } = storeActions(c);
+const { addCanvas, loadCanvases, removeCanvas } = storeActions(c);
 const handleAddMap = () => {
   addCanvas({
     name: "new-canvas-" + crypto.randomUUID(),
@@ -26,7 +26,7 @@ const handleRemoveMap = (event: MouseEvent, id: string) => {
 };
 
 onMounted(() => {
-  clearCanvases();
+  loadCanvases();
 });
 </script>
 
@@ -40,7 +40,21 @@ onMounted(() => {
     <div
       v-for="canvas of canvases"
       :key="canvas.id"
-      class="flex items-center justify-between gap-2 rounded-md border border-dashed border-slate-200 bg-slate-100 py-1 pr-1 pl-2 hover:bg-slate-200"
+      v-tooltip.right="{
+        value: canvas.name,
+        showDelay: 1000,
+        hideDelay: 300,
+        pt: {
+          arrow: {
+            style: {
+              borderRightColor: 'var(--p-slate-300)',
+              marginLeft: 'var(--spacing)',
+            },
+          },
+          text: 'text-xs text-slate-500 p-2 !bg-slate-300 ml-1',
+        },
+      }"
+      class="group flex min-h-8 cursor-pointer items-center justify-between gap-2 rounded-md border border-dashed border-slate-200 bg-slate-100 py-1 pr-1 pl-2 hover:bg-slate-200"
     >
       <span
         class="w-0 flex-1 overflow-hidden text-xs text-ellipsis whitespace-nowrap text-slate-500"
@@ -48,12 +62,12 @@ onMounted(() => {
         {{ canvas.name }}
       </span>
       <button
-        class="flex cursor-pointer flex-col items-center justify-center rounded-md border border-slate-200 bg-slate-200 px-1 py-1 hover:bg-slate-300"
+        class="hidden cursor-pointer flex-col items-center justify-center rounded-md border border-slate-100 bg-slate-200 px-0.5 py-0.5 group-hover:flex hover:bg-slate-300"
         @click="handleRemoveMap($event, canvas.id)"
       >
         <Icon
           icon="lucide:x"
-          class="text-slate-500"
+          class="h-4 w-4 text-slate-500"
         />
       </button>
     </div>
