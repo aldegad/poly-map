@@ -1,13 +1,34 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import Button from "primevue/button";
+import ContextMenu from "primevue/contextmenu";
+import Dialog from "primevue/dialog";
+import InputText from "primevue/inputtext";
+import type { MenuItem } from "primevue/menuitem";
 import { useCanvasStore } from "@/stores/canvasStore";
+import type { CanvasState } from "@/types";
 import { freezedStoreRefs } from "@/utils/stores/freezedStoreRefs";
 import { storeActions } from "@/utils/stores/storeActions";
 
+const cm = ref<InstanceType<typeof ContextMenu>>();
+const menu = ref<MenuItem[]>([
+  {
+    label: "rename",
+    icon: "lucide:file-pen-line",
+    command: () => {
+      handleRename();
+    },
+  },
+]);
+
 const c = useCanvasStore();
+const rightClickIndex = ref<number | null>(null);
+const renamingInput = ref<string>("");
+const visible = ref(false);
 const { canvases } = freezedStoreRefs(c);
-const { addCanvas, loadCanvases, removeCanvas } = storeActions(c);
+const { addCanvas, loadCanvases, removeCanvas, renameCanvasByIndex } =
+  storeActions(c);
 const handleAddMap = () => {
   addCanvas({
     name: "new-canvas-" + crypto.randomUUID(),
@@ -25,6 +46,19 @@ const handleRemoveMap = (event: MouseEvent, id: string) => {
   removeCanvas(id);
 };
 
+const handleRightClick = (event: MouseEvent, index: number) => {
+  rightClickIndex.value = index;
+  cm.value?.show(event);
+};
+
+const handleRename = () => {
+  if (rightClickIndex.value !== null) {
+    visible.value = true;
+    renamingInput.value = canvases.value[rightClickIndex.value].name;
+    // renameCanvasByIndex(rightClickIndex.value, "new-name");
+  }
+};
+
 onMounted(() => {
   loadCanvases();
 });
@@ -38,8 +72,10 @@ onMounted(() => {
       <span class="text-xs text-slate-500">Maps</span>
     </div>
     <div
-      v-for="canvas of canvases"
+      v-for="(canvas, index) of canvases"
       :key="canvas.id"
+      @contextmenu="handleRightClick($event, index)"
+      aria-haspopup="true"
       v-tooltip.right="{
         value: canvas.name,
         showDelay: 1000,
@@ -81,4 +117,70 @@ onMounted(() => {
       />
     </button>
   </div>
+  <ContextMenu
+    ref="cm"
+    :model="menu"
+    class="!min-w-30"
+  >
+    <template #item="{ item }">
+      <div class="flex w-auto cursor-pointer items-center gap-2 p-1">
+        <Icon
+          :icon="String(item.icon)"
+          class="h-4 w-4 text-slate-500"
+        />
+        <label class="flex items-center text-xs text-slate-500">
+          {{ item.label }}
+        </label>
+      </div>
+    </template>
+  </ContextMenu>
+  <Dialog
+    v-model:visible="visible"
+    modal
+    header="Edit Profile"
+    :style="{ width: '25rem' }"
+  >
+    <span class="text-surface-500 dark:text-surface-400 mb-8 block">
+      Update your information.
+    </span>
+    <div class="mb-4 flex items-center gap-4">
+      <label
+        for="username"
+        class="w-24 font-semibold"
+      >
+        Username
+      </label>
+      <InputText
+        id="username"
+        class="flex-auto"
+        autocomplete="off"
+      />
+    </div>
+    <div class="mb-8 flex items-center gap-4">
+      <label
+        for="email"
+        class="w-24 font-semibold"
+      >
+        Email
+      </label>
+      <InputText
+        id="email"
+        class="flex-auto"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex justify-end gap-2">
+      <Button
+        type="button"
+        label="Cancel"
+        severity="secondary"
+        @click="visible = false"
+      ></Button>
+      <Button
+        type="button"
+        label="Save"
+        @click="visible = false"
+      ></Button>
+    </div>
+  </Dialog>
 </template>
