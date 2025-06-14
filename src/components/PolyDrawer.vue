@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /* import { onBeforeUnmount, onMounted } from "vue";
 import { usePolygonStore } from "@/stores/polygonStore";
-import type { PolygonPoint } from "@/types";
+import type { PolygonPoint } from "@/schemas";
 import {
   distance,
   getMousePoint,

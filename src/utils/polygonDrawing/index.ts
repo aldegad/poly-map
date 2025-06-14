@@ -1,5 +1,5 @@
 export * from "./distance";
-export * from "./getMousePoint";
+export * from "./extractCoordsFromParent";
 export * from "./isPointInPolygons";
 export * from "./isPolygonClosed";
 export * from "./movePointTogether";

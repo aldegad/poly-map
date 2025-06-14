@@ -1,4 +1,4 @@
-import type { Polygon, PolygonPoint } from "@/types";
+import type { Polygon, PolygonPoint } from "@/schemas/stores/polygonStore";
 
 export function isPointInPolygon(
   point: PolygonPoint,

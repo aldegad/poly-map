@@ -1,4 +1,4 @@
-import type { PolygonPoint } from "@/types";
+import type { PolygonPoint } from "@/schemas/stores/polygonStore";
 
 export function drawingPolygonStart(
   setCurrentPolygon: (points: PolygonPoint[]) => void,

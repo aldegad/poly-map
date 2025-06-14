@@ -1,4 +1,4 @@
-import type { CanvasState } from "@/types";
+import type { CanvasState } from "@/schemas/stores/canvasStore";
 
 export const mapsTooltip = (canvas: CanvasState) => {
   return {

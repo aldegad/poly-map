@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
+import type { Tool } from "@/schemas/tools";
 
-const tools = [
+const tools: Tool[] = [
   {
     name: "Pointer",
     icon: "lucide:mouse-pointer-2",
@@ -33,14 +34,12 @@ const tools = [
       <span class="text-xs text-slate-500">Tools</span>
     </div>
     <div
-      class="grid grid-cols-2 gap-2 rounded-md border border-dashed border-slate-200 bg-slate-100 p-2"
+      class="grid grid-cols-3 gap-2 rounded-md border border-dashed border-slate-200 bg-slate-100 p-2"
     >
       <button
         v-for="tool in tools"
         :key="tool.icon"
-        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-md bg-slate-200 hover:bg-slate-300"
-        :title="tool.name"
-        v-tooltip="'Enter your username'"
+        class="flex h-8 w-8 cursor-pointer items-center justify-center rounded-md bg-slate-200 hover:bg-slate-300"
       >
         <Icon
           :icon="tool.icon"

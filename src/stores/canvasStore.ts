@@ -1,7 +1,10 @@
 import { del, get, set } from "idb-keyval";
 import { toRaw } from "vue";
 import { type _GettersTree, defineStore } from "pinia";
-import type { CanvasStoreActions, CanvasStoreState } from "@/types";
+import type {
+  CanvasStoreActions,
+  CanvasStoreState,
+} from "@/schemas/stores/canvasStore";
 
 export const useCanvasStore = defineStore<
   "canvas",

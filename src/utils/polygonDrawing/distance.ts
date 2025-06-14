@@ -1,4 +1,4 @@
-import type { PolygonPoint } from "@/types";
+import type { PolygonPoint } from "@/schemas/stores/polygonStore";
 
 export function distance(a: PolygonPoint, b: PolygonPoint) {
   return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2);

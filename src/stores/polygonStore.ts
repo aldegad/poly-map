@@ -5,7 +5,7 @@ import type {
   PolygonPoint,
   PolygonStoreActions,
   PolygonStoreState,
-} from "@/types";
+} from "@/schemas";
 
 function toRawPolygons(polygons: Polygon[]): Polygon[] {
   return polygons.map((poly) => ({

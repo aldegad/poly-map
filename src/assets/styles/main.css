@@ -1,33 +1,44 @@
 @import "tailwindcss";
-@import "tailwindcss-primeui";
 @import "./pretendardvariable.css";
 
 @theme {
   --font-display: "Pretendard Variable";
 }
 
-html,
-body,
-#app {
-  @apply m-0 h-full w-full overflow-hidden p-0 font-(family-name:--font-display);
-}
+@layer base {
+  html,
+  body,
+  #app {
+    @apply m-0 h-full w-full overflow-hidden p-0 font-(family-name:--font-display);
+  }
+  button {
+    @apply h-8 cursor-pointer rounded-md border border-slate-200 bg-slate-400 text-sm text-white hover:bg-slate-500;
+  }
+  input {
+    @apply h-8 rounded-md border border-slate-200 bg-white px-2 py-1 text-sm text-slate-800 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none;
+  }
+  label {
+    cursor: inherit;
+  }
+  /* Chrome, Safari, Edge */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-.p-popover {
-  @apply !border-slate-50;
-}
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 
-.p-popover-content {
-  @apply !p-2;
-}
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
 
-/* Chrome, Safari, Edge */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
+  }
 }
